@@ -537,6 +537,115 @@
     color: var(--primary-dark);
     font-weight: 600;
   }
+
+  /* Camera modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 18px; padding: 22px 20px;
+    width: calc(100% - 40px); max-width: 440px; max-height: 90vh;
+    overflow-y: auto; position: relative;
+  }
+  .modal-title {
+    font-size: 16px; font-weight: 700; margin-bottom: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-close {
+    background: none; border: none; font-size: 20px;
+    cursor: pointer; color: #aaa; line-height: 1;
+  }
+  .modal-close:hover { color: var(--danger); }
+  .camera-upload-area {
+    border: 2px dashed #d0d0d0; border-radius: 12px;
+    padding: 24px 16px; text-align: center; cursor: pointer;
+    transition: border-color 0.2s; background: #fafafa; margin-bottom: 14px;
+  }
+  .camera-upload-area:hover { border-color: var(--primary); background: #f0faf0; }
+  .camera-upload-area input { display: none; }
+  .camera-preview {
+    width: 100%; max-height: 240px; object-fit: cover;
+    border-radius: 10px; margin-bottom: 14px; display: none;
+  }
+  .ai-analyzing {
+    text-align: center; padding: 20px 0; color: var(--text-light); font-size: 14px;
+    display: none;
+  }
+  .ai-analyzing .spinner {
+    width: 32px; height: 32px; border: 3px solid #e0e0e0;
+    border-top-color: var(--primary); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ai-result-list { list-style: none; margin-bottom: 14px; }
+  .ai-result-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 0; border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .ai-result-item:last-child { border-bottom: none; }
+  .ai-result-item input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0; }
+  .ai-result-name { flex: 1; font-weight: 500; }
+  .ai-result-cal { color: var(--warn); font-weight: 600; white-space: nowrap; }
+  .ai-result-edit { width: 60px; padding: 4px 6px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 12px; text-align: center; }
+  .ai-result-unit { font-size: 12px; color: var(--text-light); }
+  .ai-error { color: var(--danger); font-size: 13px; padding: 12px 0; text-align: center; display: none; }
+  .camera-btn {
+    background: #fff; border: 1.5px solid #e0e0e0; border-radius: 8px;
+    padding: 6px 12px; font-size: 13px; cursor: pointer; color: #555;
+    display: flex; align-items: center; gap: 4px; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .camera-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+  .apikey-hint { font-size: 11px; color: var(--text-light); margin-top: 5px; line-height: 1.5; }
+
+  /* Input mode toggle */
+  .input-mode-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+  .mode-btn {
+    flex: 1; padding: 6px 10px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+    font-size: 12px; cursor: pointer; background: #f5f5f5; color: var(--text-light);
+    text-align: center; transition: all 0.2s;
+  }
+  .mode-btn.active {
+    background: #e8f5e9; border-color: var(--primary);
+    color: var(--primary-dark); font-weight: 600;
+  }
+
+  /* Food DB management */
+  .food-db-edit-btn, .food-db-del-btn {
+    background: none; border: 1px solid #e0e0e0; border-radius: 5px;
+    padding: 3px 7px; font-size: 11px; cursor: pointer; color: var(--text-light); margin-left: 2px;
+  }
+  .food-db-edit-btn:hover { border-color: #2196F3; color: #2196F3; }
+  .food-db-del-btn:hover { border-color: var(--danger); color: var(--danger); }
+  .food-db-custom-badge {
+    font-size: 10px; background: #e3f2fd; color: #1976D2;
+    padding: 1px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle;
+  }
+
+  /* Add/Edit food form */
+  .add-food-form {
+    background: #f8f9fa; border-radius: 10px; padding: 14px;
+    margin-bottom: 14px; border: 1.5px solid #e0e0e0;
+  }
+  .add-food-form-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--primary-dark); }
+  .add-food-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;
+  }
+  .add-food-grid .full { grid-column: 1 / -1; }
+  .add-food-grid input, .add-food-grid select {
+    width: 100%; padding: 8px 10px; border: 1.5px solid #e0e0e0;
+    border-radius: 8px; font-size: 13px; outline: none; background: #fff;
+  }
+  .add-food-grid input:focus, .add-food-grid select:focus { border-color: var(--primary); }
+  .add-food-btns { display: flex; gap: 8px; }
+  .add-food-btns button {
+    flex: 1; padding: 8px; border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -607,10 +716,20 @@
       </div>
     </div>
 
-    <div class="food-input-row">
+    <div class="input-mode-toggle">
+      <div class="mode-btn active" id="modeByGram" onclick="setInputMode('gram')">📏 按克数</div>
+      <div class="mode-btn" id="modeByKcal" onclick="setInputMode('kcal')">🔥 直接输入热量</div>
+      <button class="camera-btn" onclick="openCameraModal()">📷 拍照识别</button>
+    </div>
+    <div class="food-input-row" id="inputRowGram">
       <input type="text" id="foodInput" placeholder="输入食材名称..." autocomplete="off">
       <input type="number" id="foodWeight" placeholder="克" min="1">
       <button class="btn-small" onclick="addFood()">添加</button>
+    </div>
+    <div class="food-input-row" id="inputRowKcal" style="display:none;">
+      <input type="text" id="foodInputDirect" placeholder="食物描述（如：外卖套餐）" autocomplete="off">
+      <input type="number" id="foodKcalDirect" placeholder="kcal" min="1" style="width:80px;flex:none;">
+      <button class="btn-small" onclick="addFoodDirect()">添加</button>
     </div>
     <div class="suggestions">
       <div class="suggestions-list" id="suggestionsList"></div>
@@ -658,7 +777,33 @@
 <!-- Page: Food Database -->
 <div class="page" id="page-fooddb">
   <div class="card">
-    <h2>📖 食材百科</h2>
+    <h2 style="justify-content:space-between;">📖 食材百科 <button class="btn-small" onclick="toggleAddFoodForm()" id="addFoodToggleBtn" style="font-size:12px;padding:5px 12px;">⊕ 添加食材</button></h2>
+    <div id="addFoodForm" style="display:none;" class="add-food-form">
+      <div class="add-food-form-title" id="addFoodFormTitle">➕ 添加新食材</div>
+      <div class="add-food-grid">
+        <div class="full"><input type="text" id="newFoodName" placeholder="食材名称（如：凉皮）"></div>
+        <input type="number" id="newFoodCal" placeholder="热量 kcal/100g" min="0" step="0.1">
+        <input type="number" id="newFoodUnitG" placeholder="常见份量 (g)" min="1">
+        <input type="text" id="newFoodUnit" placeholder="单位描述（如：1份）">
+        <select id="newFoodCategory">
+          <option value="主食">主食</option>
+          <option value="肉类">肉类</option>
+          <option value="海鲜">海鲜</option>
+          <option value="蔬菜">蔬菜</option>
+          <option value="豆制品">豆制品</option>
+          <option value="水果">水果</option>
+          <option value="奶制品">奶制品</option>
+          <option value="坚果">坚果</option>
+          <option value="调料">调料</option>
+          <option value="饮品">饮品</option>
+          <option value="零食">零食</option>
+        </select>
+      </div>
+      <div class="add-food-btns">
+        <button onclick="saveCustomFood()" style="background:var(--primary);color:#fff;">💾 保存</button>
+        <button onclick="cancelAddFood()" style="background:#e0e0e0;color:#555;">取消</button>
+      </div>
+    </div>
     <div class="food-search-box">
       <span class="search-icon">🔍</span>
       <input type="text" id="dbSearchInput" placeholder="搜索食材名称..." autocomplete="off">
@@ -704,6 +849,11 @@
         </select>
       </div>
       <div class="form-group full">
+        <label>GitHub Token <span style="color:#aaa;font-size:11px;">（拍照识别功能需要）</span></label>
+        <input type="password" id="openaiKeyInput" placeholder="github_pat_..." autocomplete="off">
+        <div class="apikey-hint">使用 GitHub Models 免费额度，仅存储在本设备。获取：<a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary);">GitHub 个人访问令牌</a>（无需任何权限，创建后直接复制）</div>
+      </div>
+      <div class="form-group full">
         <button class="btn btn-primary" onclick="saveProfile()">保存并计算代谢</button>
       </div>
     </div>
@@ -726,6 +876,48 @@
       <div style="margin-top:8px; padding:10px; background:#e8f5e9; border-radius:8px; font-size:12px; color: var(--primary-dark);">
         💡 每日减少 300 kcal，约每月可减重约 1 kg，健康且可持续。
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Camera Modal -->
+<div class="modal-overlay" id="cameraModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      📷 拍照识别食物
+      <button class="modal-close" onclick="closeCameraModal()">✕</button>
+    </div>
+
+    <div id="cameraUploadArea" class="camera-upload-area" onclick="document.getElementById('cameraFileInput').click()">
+      <div style="font-size:36px;margin-bottom:8px;">📷</div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:4px;">点击拍照或选择图片</div>
+      <div style="font-size:12px;color:#aaa;">支持拍摄餐盘、外卖、零食等</div>
+      <input type="file" id="cameraFileInput" accept="image/*" capture="environment" onchange="handleImageCapture(this)">
+    </div>
+
+    <img id="cameraPreview" class="camera-preview" alt="预览">
+
+    <div class="ai-analyzing" id="aiAnalyzing">
+      <div class="spinner"></div>
+      AI 正在识别食物，请稍候…
+    </div>
+
+    <div class="ai-error" id="aiError"></div>
+
+    <div id="aiResultSection" style="display:none;">
+      <div style="font-size:13px;color:var(--text-light);margin-bottom:10px;">✅ 识别完成，勾选要添加的食物，可修改克数：</div>
+      <ul class="ai-result-list" id="aiResultList"></ul>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary" style="margin-top:0;" onclick="confirmAIFoods()">添加选中食物</button>
+        <button class="btn" style="margin-top:0;background:#f0f0f0;color:#555;" onclick="retakePhoto()">重新拍摄</button>
+      </div>
+    </div>
+
+    <div id="apiKeyMissing" style="display:none;text-align:center;padding:16px 0;">
+      <div style="font-size:32px;margin-bottom:8px;">🔑</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:6px;">需要配置 OpenAI API Key</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">请前往「个人信息」页面填写 API Key，即可启用拍照识别功能。</div>
+      <button class="btn btn-primary" style="margin-top:0;" onclick="closeCameraModal();switchPage('profile');">去配置</button>
     </div>
   </div>
 </div>
@@ -755,6 +947,8 @@ const FOOD_DB = {
   '年糕': 154, '粽子': 195, '月饼': 421, '麻花': 524, '春卷': 198,
   '烙饼': 225, '煎饼': 233, '炒饭': 178, '炒面': 165, '拌面': 157,
   '燕麦': 367, '燕麦片': 338, '麦片': 367, '小米粥': 46,
+  '凉皮': 150, '凉面': 137, '冷面': 130, '米线': 116,
+  '螺蛳粉': 125, '过桥米线': 130, '热干面': 152,
 
   // 肉类
   '鸡胸肉': 133, '鸡腿': 181, '鸡翅': 194, '鸡蛋': 144,
@@ -824,6 +1018,12 @@ const FOOD_DB = {
   '可乐': 43, '雪碧': 42, '果汁': 46, '橙汁': 45,
   '啤酒': 32, '白酒': 298, '红酒': 86, '咖啡': 1,
   '豆浆': 31, '椰汁': 51, '功能饮料': 26,
+  '绿茶': 1, '红茶': 1, '柠檬水': 6, '气泡水': 0,
+  '苏打水': 0, '椰子水': 20, '运动饮料': 23,
+  '葡萄汁': 60, '苹果汁': 47, '西瓜汁': 23, '番茄汁': 17,
+  '蜂蜜水': 24, '珍珠奶茶': 75, '咖啡拿铁': 43,
+  '美式咖啡': 4, '奶盖茶': 65, '柚子茶': 60,
+  '柠檬茶': 20, '凉茶': 10, '菊花茶': 5,
 
   // 零食/快餐
   '薯片': 548, '巧克力': 589, '糖果': 397,
@@ -936,6 +1136,10 @@ function saveProfile() {
   profile = { gender: selectedGender, height, weight, age, activity };
   localStorage.setItem('hm_profile', JSON.stringify(profile));
 
+  // Save API key if provided
+  const keyVal = document.getElementById('openaiKeyInput').value.trim();
+  if (keyVal) localStorage.setItem('hm_openai_key', keyVal);
+
   // Also record in weight log
   weightLog[getTodayKey()] = weight;
   saveWeightLog();
@@ -972,6 +1176,10 @@ function loadProfile() {
   document.getElementById('ageInput').value = profile.age;
   document.getElementById('activityLevel').value = profile.activity;
   selectedGender = profile.gender;
+
+  // Load API key
+  const savedKey = localStorage.getItem('hm_openai_key') || '';
+  if (savedKey) document.getElementById('openaiKeyInput').value = savedKey;
 
   document.querySelectorAll('.gender-option').forEach(e => {
     e.classList.toggle('active',
@@ -1094,7 +1302,7 @@ function renderFoodList() {
     <li class="food-item">
       <div>
         <div class="food-name">${escapeHtml(f.name)}</div>
-        <div class="food-detail">${f.weight}g · ${f.calPer100g} kcal/100g</div>
+        <div class="food-detail">${f.direct ? '🔥 直接输入热量' : `${f.weight}g · ${f.calPer100g} kcal/100g`}</div>
       </div>
       <div style="display:flex; align-items:center;">
         <span class="food-cal">${Math.round(f.cal)} kcal</span>
@@ -1118,7 +1326,8 @@ function addFood() {
 
   if (!name) return;
 
-  const calPer100g = FOOD_DB[name];
+  const activeDb = getActiveFoodSimpleDb();
+  const calPer100g = activeDb[name];
   if (calPer100g === undefined) {
     alert(`未找到「${name}」的热量数据，请尝试其他名称或从建议中选择`);
     return;
@@ -1154,16 +1363,17 @@ document.getElementById('foodInput').addEventListener('input', function() {
     return;
   }
 
-  const matches = Object.keys(FOOD_DB).filter(k => k.includes(val)).slice(0, 8);
+  const activeDb = getActiveFoodSimpleDb();
+  const matches = Object.keys(activeDb).filter(k => k.includes(val)).slice(0, 8);
   if (matches.length === 0) {
     list.classList.remove('show');
     return;
   }
 
   list.innerHTML = matches.map(m => `
-    <div class="suggestion-item" onclick="selectSuggestion('${m}')">
-      <span>${m}</span>
-      <span class="cal-info">${FOOD_DB[m]} kcal/100g</span>
+    <div class="suggestion-item" onclick="selectSuggestion('${escapeAttr(m)}')">
+      <span>${escapeHtml(m)}</span>
+      <span class="cal-info">${activeDb[m]} kcal/100g</span>
     </div>
   `).join('');
   list.classList.add('show');
@@ -1195,6 +1405,9 @@ document.getElementById('foodInput').addEventListener('keydown', function(e) {
 });
 document.getElementById('foodWeight').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') addFood();
+});
+document.getElementById('foodKcalDirect').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addFoodDirect();
 });
 
 // ===================== Page Switching =====================
@@ -1327,6 +1540,13 @@ const FOOD_UNIT_DB = {
   '燕麦': { cal: 367, unit: '1杯', unitG: 40, category: '主食' },
   '燕麦片': { cal: 338, unit: '1包(小)', unitG: 35, category: '主食' },
   '麦片': { cal: 367, unit: '1杯', unitG: 40, category: '主食' },
+  '凉皮': { cal: 150, unit: '1份', unitG: 250, category: '主食' },
+  '凉面': { cal: 137, unit: '1碗', unitG: 250, category: '主食' },
+  '冷面': { cal: 130, unit: '1碗', unitG: 250, category: '主食' },
+  '米线': { cal: 116, unit: '1碗', unitG: 300, category: '主食' },
+  '螺蛳粉': { cal: 125, unit: '1袋', unitG: 300, category: '主食' },
+  '过桥米线': { cal: 130, unit: '1碗', unitG: 500, category: '主食' },
+  '热干面': { cal: 152, unit: '1碗', unitG: 300, category: '主食' },
 
   // 肉类
   '鸡胸肉': { cal: 133, unit: '1块', unitG: 150, category: '肉类' },
@@ -1529,6 +1749,26 @@ const FOOD_UNIT_DB = {
   '咖啡': { cal: 1, unit: '1杯(黑)', unitG: 200, category: '饮品' },
   '椰汁': { cal: 51, unit: '1杯', unitG: 250, category: '饮品' },
   '功能饮料': { cal: 26, unit: '1罐', unitG: 250, category: '饮品' },
+  '绿茶': { cal: 1, unit: '1杯', unitG: 300, category: '饮品' },
+  '红茶': { cal: 1, unit: '1杯', unitG: 300, category: '饮品' },
+  '柠檬水': { cal: 6, unit: '1杯', unitG: 300, category: '饮品' },
+  '气泡水': { cal: 0, unit: '1瓶', unitG: 500, category: '饮品' },
+  '苏打水': { cal: 0, unit: '1瓶', unitG: 330, category: '饮品' },
+  '椰子水': { cal: 20, unit: '1瓶', unitG: 330, category: '饮品' },
+  '运动饮料': { cal: 23, unit: '1瓶', unitG: 500, category: '饮品' },
+  '葡萄汁': { cal: 60, unit: '1杯', unitG: 250, category: '饮品' },
+  '苹果汁': { cal: 47, unit: '1杯', unitG: 250, category: '饮品' },
+  '西瓜汁': { cal: 23, unit: '1杯', unitG: 250, category: '饮品' },
+  '番茄汁': { cal: 17, unit: '1杯', unitG: 250, category: '饮品' },
+  '蜂蜜水': { cal: 24, unit: '1杯', unitG: 300, category: '饮品' },
+  '珍珠奶茶': { cal: 75, unit: '1杯(中)', unitG: 500, category: '饮品' },
+  '咖啡拿铁': { cal: 43, unit: '1杯', unitG: 350, category: '饮品' },
+  '美式咖啡': { cal: 4, unit: '1杯', unitG: 350, category: '饮品' },
+  '奶盖茶': { cal: 65, unit: '1杯', unitG: 500, category: '饮品' },
+  '柚子茶': { cal: 60, unit: '1杯', unitG: 300, category: '饮品' },
+  '柠檬茶': { cal: 20, unit: '1杯', unitG: 300, category: '饮品' },
+  '凉茶': { cal: 10, unit: '1罐', unitG: 310, category: '饮品' },
+  '菊花茶': { cal: 5, unit: '1杯', unitG: 300, category: '饮品' },
 
   // 零食/快餐
   '薯片': { cal: 548, unit: '1包(小)', unitG: 40, category: '零食' },
@@ -1561,8 +1801,10 @@ function renderFoodDb() {
     `<div class="cat-tab${c === currentCategory ? ' active' : ''}" onclick="switchCategory('${c}')">${c}</div>`
   ).join('');
 
+  const activeUnitDb = getActiveFoodUnitDb();
+
   // Filter foods
-  const entries = Object.entries(FOOD_UNIT_DB).filter(([name, info]) => {
+  const entries = Object.entries(activeUnitDb).filter(([name, info]) => {
     const matchCat = currentCategory === '全部' || info.category === currentCategory;
     const matchSearch = !dbSearchText || name.includes(dbSearchText);
     return matchCat && matchSearch;
@@ -1574,18 +1816,25 @@ function renderFoodDb() {
   } else {
     listEl.innerHTML = entries.map(([name, info]) => {
       const unitCal = Math.round(info.cal * info.unitG / 100);
+      const isCustom = !!customFoods[name];
+      const safeName = escapeAttr(name);
       return `
         <li class="food-db-item">
-          <div>
-            <div class="food-db-name">${escapeHtml(name)}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="food-db-name">
+              ${escapeHtml(name)}
+              ${isCustom ? '<span class="food-db-custom-badge">自定义</span>' : ''}
+            </div>
             <div class="food-db-unit">${info.unit} ≈ ${info.unitG}g · ${info.cal} kcal/100g</div>
           </div>
-          <div style="display:flex; align-items:center;">
+          <div style="display:flex;align-items:center;gap:2px;flex-shrink:0;">
             <div class="food-db-right">
               <div class="food-db-cal">${unitCal} kcal</div>
               <div class="food-db-unit">/${info.unit}</div>
             </div>
-            <button class="food-db-add-btn" onclick="quickAddFromDb('${name}', ${info.unitG})">+ 添加</button>
+            <button class="food-db-add-btn" onclick="quickAddFromDb('${safeName}',${info.unitG})">+</button>
+            <button class="food-db-edit-btn" onclick="editFoodItem('${safeName}')">✏️</button>
+            <button class="food-db-del-btn" onclick="deleteFoodItem('${safeName}')">🗑️</button>
           </div>
         </li>`;
     }).join('');
@@ -1605,7 +1854,8 @@ function quickAddFromDb(name, defaultWeight) {
   const w = parseFloat(weight);
   if (!w || w <= 0) return;
 
-  const calPer100g = FOOD_DB[name];
+  const activeSimpleDb = getActiveFoodSimpleDb();
+  const calPer100g = activeSimpleDb[name];
   if (calPer100g === undefined) return;
   const cal = calPer100g * w / 100;
   const meals = getTodayMeals();
@@ -1614,6 +1864,157 @@ function quickAddFromDb(name, defaultWeight) {
   renderFoodList();
   updateStats();
   alert(`✅ 已添加 ${name} ${w}g (${Math.round(cal)} kcal) 到${currentMeal === 'breakfast' ? '早餐' : currentMeal === 'lunch' ? '午餐' : '晚餐'}`);
+}
+
+// ===================== Custom Food Management =====================
+let customFoods = {};
+let deletedFoods = new Set();
+let editingFood = null;
+
+function loadCustomFoods() {
+  customFoods = JSON.parse(localStorage.getItem('hm_custom_foods') || '{}');
+  deletedFoods = new Set(JSON.parse(localStorage.getItem('hm_deleted_foods') || '[]'));
+}
+
+function saveCustomFoods() {
+  localStorage.setItem('hm_custom_foods', JSON.stringify(customFoods));
+  localStorage.setItem('hm_deleted_foods', JSON.stringify([...deletedFoods]));
+}
+
+function getActiveFoodUnitDb() {
+  const result = {};
+  for (const [k, v] of Object.entries(FOOD_UNIT_DB)) {
+    if (!deletedFoods.has(k)) result[k] = v;
+  }
+  for (const [k, v] of Object.entries(customFoods)) {
+    result[k] = v;
+  }
+  return result;
+}
+
+function getActiveFoodSimpleDb() {
+  const result = {};
+  for (const [k, v] of Object.entries(getActiveFoodUnitDb())) {
+    result[k] = v.cal;
+  }
+  for (const [k, v] of Object.entries(FOOD_DB)) {
+    if (!result[k] && !deletedFoods.has(k)) result[k] = v;
+  }
+  return result;
+}
+
+function escapeAttr(str) {
+  return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function toggleAddFoodForm() {
+  const form = document.getElementById('addFoodForm');
+  const btn = document.getElementById('addFoodToggleBtn');
+  if (form.style.display === 'none') {
+    editingFood = null;
+    document.getElementById('addFoodFormTitle').textContent = '➕ 添加新食材';
+    document.getElementById('newFoodName').disabled = false;
+    clearAddFoodForm();
+    form.style.display = 'block';
+    btn.textContent = '✕ 收起';
+    document.getElementById('addFoodForm').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    form.style.display = 'none';
+    btn.textContent = '⊕ 添加食材';
+  }
+}
+
+function clearAddFoodForm() {
+  document.getElementById('newFoodName').value = '';
+  document.getElementById('newFoodCal').value = '';
+  document.getElementById('newFoodUnitG').value = '';
+  document.getElementById('newFoodUnit').value = '';
+  document.getElementById('newFoodCategory').value = '主食';
+}
+
+function cancelAddFood() {
+  document.getElementById('addFoodForm').style.display = 'none';
+  document.getElementById('addFoodToggleBtn').textContent = '⊕ 添加食材';
+  document.getElementById('newFoodName').disabled = false;
+  editingFood = null;
+}
+
+function editFoodItem(name) {
+  const db = getActiveFoodUnitDb();
+  const info = db[name];
+  if (!info) return;
+  editingFood = name;
+  document.getElementById('addFoodFormTitle').textContent = `✏️ 修改「${name}」`;
+  document.getElementById('newFoodName').value = name;
+  document.getElementById('newFoodName').disabled = true;
+  document.getElementById('newFoodCal').value = info.cal;
+  document.getElementById('newFoodUnitG').value = info.unitG;
+  document.getElementById('newFoodUnit').value = info.unit;
+  document.getElementById('newFoodCategory').value = info.category;
+  document.getElementById('addFoodForm').style.display = 'block';
+  document.getElementById('addFoodToggleBtn').textContent = '✕ 收起';
+  document.getElementById('addFoodForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function saveCustomFood() {
+  const nameEl = document.getElementById('newFoodName');
+  const name = editingFood || nameEl.value.trim();
+  const cal = parseFloat(document.getElementById('newFoodCal').value);
+  const unitG = parseFloat(document.getElementById('newFoodUnitG').value);
+  const unit = document.getElementById('newFoodUnit').value.trim();
+  const category = document.getElementById('newFoodCategory').value;
+
+  if (!name) { alert('请输入食材名称'); nameEl.focus(); return; }
+  if (isNaN(cal) || cal < 0) { alert('请输入有效的热量值（kcal/100g）'); return; }
+  if (!unitG || unitG <= 0) { alert('请输入有效的常见份量克数'); return; }
+  if (!unit) { alert('请输入单位描述（如：1份、1杯）'); return; }
+
+  customFoods[name] = { cal, unit, unitG, category };
+  deletedFoods.delete(name);
+  saveCustomFoods();
+  cancelAddFood();
+  renderFoodDb();
+  alert(`✅ 食材「${name}」已保存！`);
+}
+
+function deleteFoodItem(name) {
+  if (!confirm(`确定删除「${name}」吗？`)) return;
+  if (customFoods[name]) {
+    delete customFoods[name];
+  } else {
+    deletedFoods.add(name);
+  }
+  saveCustomFoods();
+  renderFoodDb();
+}
+
+// ===================== Input Mode (gram / direct kcal) =====================
+let inputMode = 'gram';
+
+function setInputMode(mode) {
+  inputMode = mode;
+  document.getElementById('inputRowGram').style.display = mode === 'gram' ? 'flex' : 'none';
+  document.getElementById('inputRowKcal').style.display = mode === 'kcal' ? 'flex' : 'none';
+  document.getElementById('modeByGram').classList.toggle('active', mode === 'gram');
+  document.getElementById('modeByKcal').classList.toggle('active', mode === 'kcal');
+  if (mode === 'gram') document.getElementById('foodInput').focus();
+  else document.getElementById('foodInputDirect').focus();
+}
+
+function addFoodDirect() {
+  const nameInput = document.getElementById('foodInputDirect');
+  const kcalInput = document.getElementById('foodKcalDirect');
+  const name = nameInput.value.trim();
+  const kcal = parseFloat(kcalInput.value);
+  if (!name) { alert('请输入食物名称'); nameInput.focus(); return; }
+  if (!kcal || kcal <= 0) { alert('请输入有效的热量值'); kcalInput.focus(); return; }
+  const meals = getTodayMeals();
+  meals[currentMeal].push({ name, weight: 0, calPer100g: 0, cal: kcal, direct: true });
+  saveMeals();
+  nameInput.value = '';
+  kcalInput.value = '';
+  renderFoodList();
+  updateStats();
 }
 
 document.getElementById('dbSearchInput').addEventListener('input', function() {
@@ -1898,7 +2299,206 @@ document.getElementById('weightRecordInput').addEventListener('keydown', functio
   if (e.key === 'Enter') recordWeight();
 });
 
+// ===================== Camera / AI Food Recognition =====================
+let aiPendingFoods = [];
+
+function openCameraModal() {
+  const modal = document.getElementById('cameraModal');
+  modal.classList.add('show');
+  resetCameraModal();
+  const key = localStorage.getItem('hm_openai_key') || '';
+  if (!key) {
+    document.getElementById('apiKeyMissing').style.display = 'block';
+    document.getElementById('cameraUploadArea').style.display = 'none';
+  } else {
+    document.getElementById('apiKeyMissing').style.display = 'none';
+    document.getElementById('cameraUploadArea').style.display = 'block';
+  }
+}
+
+function closeCameraModal() {
+  document.getElementById('cameraModal').classList.remove('show');
+}
+
+function resetCameraModal() {
+  document.getElementById('cameraPreview').style.display = 'none';
+  document.getElementById('cameraPreview').src = '';
+  document.getElementById('aiAnalyzing').style.display = 'none';
+  document.getElementById('aiError').style.display = 'none';
+  document.getElementById('aiResultSection').style.display = 'none';
+  document.getElementById('cameraUploadArea').style.display = 'block';
+  document.getElementById('cameraFileInput').value = '';
+  aiPendingFoods = [];
+}
+
+function retakePhoto() {
+  resetCameraModal();
+  const key = localStorage.getItem('hm_openai_key') || '';
+  if (!key) {
+    document.getElementById('apiKeyMissing').style.display = 'block';
+    document.getElementById('cameraUploadArea').style.display = 'none';
+  }
+}
+
+function handleImageCapture(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result; // data:image/...;base64,...
+    const preview = document.getElementById('cameraPreview');
+    preview.src = base64;
+    preview.style.display = 'block';
+    document.getElementById('cameraUploadArea').style.display = 'none';
+    analyzeImageWithAI(base64);
+  };
+  reader.readAsDataURL(file);
+}
+
+async function analyzeImageWithAI(base64DataUrl) {
+  const key = localStorage.getItem('hm_openai_key') || '';
+  if (!key) return;
+
+  document.getElementById('aiAnalyzing').style.display = 'block';
+  document.getElementById('aiError').style.display = 'none';
+  document.getElementById('aiResultSection').style.display = 'none';
+
+  const base64 = base64DataUrl.split(',')[1];
+  const mimeMatch = base64DataUrl.match(/data:(image\/\w+);/);
+  const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+
+  const prompt = `请识别图片中所有可见的食物。对每种食物，估算其重量（克），并返回严格的 JSON 数组，不要有任何其他文字。格式如下：
+[
+  {"name": "米饭", "weight": 200, "cal_per_100g": 116},
+  {"name": "鸡胸肉", "weight": 150, "cal_per_100g": 133}
+]
+要求：
+- name 使用中文常见食物名称
+- weight 是估算的克数（整数）
+- cal_per_100g 是每100克的热量kcal（整数）
+- 只返回 JSON，不要有任何解释或 markdown 代码块`;
+
+  try {
+    const resp = await fetch('https://models.inference.ai.azure.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        max_tokens: 800,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}`, detail: 'low' } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    document.getElementById('aiAnalyzing').style.display = 'none';
+
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}));
+      const msg = errData?.error?.message || `HTTP ${resp.status}`;
+      showAIError(`API 请求失败：${msg}`);
+      return;
+    }
+
+    const data = await resp.json();
+    const content = data?.choices?.[0]?.message?.content || '';
+    parseAIFoodResponse(content);
+  } catch (err) {
+    document.getElementById('aiAnalyzing').style.display = 'none';
+    showAIError(`网络错误：${err.message}`);
+  }
+}
+
+function parseAIFoodResponse(text) {
+  // Strip markdown code fences if present
+  let json = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+  let foods;
+  try {
+    foods = JSON.parse(json);
+    if (!Array.isArray(foods)) throw new Error('not array');
+  } catch(e) {
+    showAIError('AI 返回格式解析失败，请重试。');
+    return;
+  }
+
+  if (foods.length === 0) {
+    showAIError('未识别到任何食物，请尝试更清晰的图片。');
+    return;
+  }
+
+  aiPendingFoods = foods.map((f, i) => ({
+    id: i,
+    name: String(f.name || '未知食物'),
+    weight: Math.round(Number(f.weight) || 100),
+    calPer100g: Math.round(Number(f.cal_per_100g) || 100),
+  }));
+
+  const listEl = document.getElementById('aiResultList');
+  listEl.innerHTML = aiPendingFoods.map(f => {
+    const cal = Math.round(f.calPer100g * f.weight / 100);
+    return `
+      <li class="ai-result-item">
+        <input type="checkbox" id="aiCheck${f.id}" checked>
+        <span class="ai-result-name">${escapeHtml(f.name)}</span>
+        <input type="number" class="ai-result-edit" id="aiW${f.id}" value="${f.weight}" min="1"
+          oninput="updateAICal(${f.id})" title="克数">
+        <span class="ai-result-unit">g</span>
+        <span class="ai-result-cal" id="aiCal${f.id}">${cal} kcal</span>
+      </li>`;
+  }).join('');
+
+  document.getElementById('aiResultSection').style.display = 'block';
+}
+
+function updateAICal(id) {
+  const food = aiPendingFoods.find(f => f.id === id);
+  if (!food) return;
+  const w = parseFloat(document.getElementById(`aiW${id}`).value) || 0;
+  const cal = Math.round(food.calPer100g * w / 100);
+  document.getElementById(`aiCal${id}`).textContent = `${cal} kcal`;
+}
+
+function confirmAIFoods() {
+  const meals = getTodayMeals();
+  let added = 0;
+  for (const food of aiPendingFoods) {
+    const checked = document.getElementById(`aiCheck${food.id}`)?.checked;
+    if (!checked) continue;
+    const w = parseFloat(document.getElementById(`aiW${food.id}`)?.value) || food.weight;
+    const cal = food.calPer100g * w / 100;
+    meals[currentMeal].push({ name: food.name, weight: w, calPer100g: food.calPer100g, cal });
+    added++;
+  }
+  if (added === 0) { alert('请至少勾选一种食物'); return; }
+  saveMeals();
+  renderFoodList();
+  updateStats();
+  closeCameraModal();
+  const mealName = currentMeal === 'breakfast' ? '早餐' : currentMeal === 'lunch' ? '午餐' : '晚餐';
+  alert(`✅ 已添加 ${added} 种食物到${mealName}！`);
+}
+
+function showAIError(msg) {
+  const el = document.getElementById('aiError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// Close modal when clicking overlay
+document.getElementById('cameraModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCameraModal();
+});
+
 // ===================== Init =====================
+loadCustomFoods();
 loadMeals();
 loadWeightLog();
 loadProfile();
