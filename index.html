@@ -849,9 +849,23 @@
         </select>
       </div>
       <div class="form-group full">
-        <label>GitHub Token <span style="color:#aaa;font-size:11px;">（拍照识别功能需要）</span></label>
-        <input type="password" id="openaiKeyInput" placeholder="github_pat_..." autocomplete="off">
-        <div class="apikey-hint">使用 GitHub Models 免费额度，仅存储在本设备。获取：<a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary);">GitHub 个人访问令牌</a>（无需任何权限，创建后直接复制）</div>
+        <label>🤖 AI 识别服务提供商</label>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div class="mode-btn active" id="providerGithub" onclick="switchAIProvider('github')" style="flex:1;text-align:center;">GitHub Models<br><span style="font-size:11px;color:#aaa;">GPT-4o · 需科学上网</span></div>
+          <div class="mode-btn" id="providerZhipu" onclick="switchAIProvider('zhipu')" style="flex:1;text-align:center;">&#x667a;&#x8c31; AI<br><span style="font-size:11px;color:#aaa;">GLM-4V-Flash · 完全免费</span></div>
+        </div>
+
+        <div id="githubKeyGroup">
+          <label style="font-size:13px;color:#555;">GitHub 个人访问令牌</label>
+          <input type="password" id="githubKeyInput" placeholder="github_pat_..." autocomplete="off">
+          <div class="apikey-hint">获取：<a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary);">github.com/settings/tokens</a>（创建时无需勾选任何权限）</div>
+        </div>
+
+        <div id="zhipuKeyGroup" style="display:none;">
+          <label style="font-size:13px;color:#555;">智谱 AI API Key</label>
+          <input type="password" id="zhipuKeyInput" placeholder="请输入智谱 API Key" autocomplete="off">
+          <div class="apikey-hint">完全免费，获取：<a href="https://open.bigmodel.cn/usercenter/apikeys" target="_blank" style="color:var(--primary);">open.bigmodel.cn</a></div>
+        </div>
       </div>
       <div class="form-group full">
         <button class="btn btn-primary" onclick="saveProfile()">保存并计算代谢</button>
@@ -1136,9 +1150,15 @@ function saveProfile() {
   profile = { gender: selectedGender, height, weight, age, activity };
   localStorage.setItem('hm_profile', JSON.stringify(profile));
 
-  // Save API key if provided
-  const keyVal = document.getElementById('openaiKeyInput').value.trim();
-  if (keyVal) localStorage.setItem('hm_openai_key', keyVal);
+  // Save AI provider & keys
+  const provider = localStorage.getItem('hm_ai_provider') || 'github';
+  const githubKey = document.getElementById('githubKeyInput').value.trim();
+  const zhipuKey = document.getElementById('zhipuKeyInput').value.trim();
+  if (githubKey) localStorage.setItem('hm_github_key', githubKey);
+  if (zhipuKey) localStorage.setItem('hm_zhipu_key', zhipuKey);
+  // keep hm_openai_key in sync for camera check
+  const activeKey = provider === 'zhipu' ? zhipuKey || localStorage.getItem('hm_zhipu_key') : githubKey || localStorage.getItem('hm_github_key');
+  if (activeKey) localStorage.setItem('hm_openai_key', activeKey);
 
   // Also record in weight log
   weightLog[getTodayKey()] = weight;
@@ -1177,9 +1197,13 @@ function loadProfile() {
   document.getElementById('activityLevel').value = profile.activity;
   selectedGender = profile.gender;
 
-  // Load API key
-  const savedKey = localStorage.getItem('hm_openai_key') || '';
-  if (savedKey) document.getElementById('openaiKeyInput').value = savedKey;
+  // Load AI provider & keys
+  const savedProvider = localStorage.getItem('hm_ai_provider') || 'github';
+  switchAIProvider(savedProvider);
+  const savedGithubKey = localStorage.getItem('hm_github_key') || '';
+  if (savedGithubKey) document.getElementById('githubKeyInput').value = savedGithubKey;
+  const savedZhipuKey = localStorage.getItem('hm_zhipu_key') || '';
+  if (savedZhipuKey) document.getElementById('zhipuKeyInput').value = savedZhipuKey;
 
   document.querySelectorAll('.gender-option').forEach(e => {
     e.classList.toggle('active',
@@ -2302,11 +2326,26 @@ document.getElementById('weightRecordInput').addEventListener('keydown', functio
 // ===================== Camera / AI Food Recognition =====================
 let aiPendingFoods = [];
 
+function switchAIProvider(provider) {
+  localStorage.setItem('hm_ai_provider', provider);
+  document.getElementById('providerGithub').classList.toggle('active', provider === 'github');
+  document.getElementById('providerZhipu').classList.toggle('active', provider === 'zhipu');
+  document.getElementById('githubKeyGroup').style.display = provider === 'github' ? 'block' : 'none';
+  document.getElementById('zhipuKeyGroup').style.display = provider === 'zhipu' ? 'block' : 'none';
+}
+
+function getActiveAIKey() {
+  const provider = localStorage.getItem('hm_ai_provider') || 'github';
+  return provider === 'zhipu'
+    ? (localStorage.getItem('hm_zhipu_key') || '')
+    : (localStorage.getItem('hm_github_key') || localStorage.getItem('hm_openai_key') || '');
+}
+
 function openCameraModal() {
   const modal = document.getElementById('cameraModal');
   modal.classList.add('show');
   resetCameraModal();
-  const key = localStorage.getItem('hm_openai_key') || '';
+  const key = getActiveAIKey();
   if (!key) {
     document.getElementById('apiKeyMissing').style.display = 'block';
     document.getElementById('cameraUploadArea').style.display = 'none';
@@ -2333,7 +2372,7 @@ function resetCameraModal() {
 
 function retakePhoto() {
   resetCameraModal();
-  const key = localStorage.getItem('hm_openai_key') || '';
+  const key = getActiveAIKey();
   if (!key) {
     document.getElementById('apiKeyMissing').style.display = 'block';
     document.getElementById('cameraUploadArea').style.display = 'none';
@@ -2357,7 +2396,10 @@ function handleImageCapture(input) {
 }
 
 async function analyzeImageWithAI(base64DataUrl) {
-  const key = localStorage.getItem('hm_openai_key') || '';
+  const provider = localStorage.getItem('hm_ai_provider') || 'github';
+  const key = provider === 'zhipu'
+    ? (localStorage.getItem('hm_zhipu_key') || '')
+    : (localStorage.getItem('hm_github_key') || localStorage.getItem('hm_openai_key') || '');
   if (!key) return;
 
   document.getElementById('aiAnalyzing').style.display = 'block';
@@ -2379,20 +2421,29 @@ async function analyzeImageWithAI(base64DataUrl) {
 - cal_per_100g 是每100克的热量kcal（整数）
 - 只返回 JSON，不要有任何解释或 markdown 代码块`;
 
+  const isZhipu = provider === 'zhipu';
+  const endpoint = isZhipu
+    ? 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
+    : 'https://models.inference.ai.azure.com/chat/completions';
+  const model = isZhipu ? 'glm-4.6v-flash' : 'gpt-4o';
+  const imageContent = isZhipu
+    ? { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } }
+    : { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}`, detail: 'low' } };
+
   try {
-    const resp = await fetch('https://models.inference.ai.azure.com/chat/completions', {
+    const resp = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model,
         max_tokens: 800,
         messages: [{
           role: 'user',
           content: [
-            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}`, detail: 'low' } },
+            imageContent,
             { type: 'text', text: prompt }
           ]
         }]
